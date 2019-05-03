@@ -8,9 +8,12 @@ package Client;
 import Models.Data;
 import Models.DataCenter;
 import Models.DataCenters;
+import Models.EnergyReport;
+import Models.Response;
 import Models.TempReport;
 import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
@@ -22,58 +25,79 @@ import javax.ws.rs.core.UriBuilder;
  * @author gusta
  */
 public class Communication {
+
     private ClientConfig config;
     private Client client;
     private WebResource service;
-    
-    
-    public Communication(){
-    config = new DefaultClientConfig();
-    client = Client.create(config);
-    service = client.resource(
-            UriBuilder.fromUri("http://localhost:8080/DataCenterService").build());
+
+    public Communication() {
+        config = new DefaultClientConfig();
+        client = Client.create(config);
+        service = client.resource(
+                UriBuilder.fromUri("http://localhost:8080/DataCenterService").build());
     }
-    public Data getDCCurrentTemp(int DCid){
+
+    public Response changeEnergyCost(Float newCost) {
         Gson gson = new Gson();
-         String dcsJson = service.path("rest/DataCenter/get/currenttemp/"+ DCid)
-                    .accept(MediaType.APPLICATION_JSON).get(String.class);
-          Data res = gson.fromJson(dcsJson, Data.class);
-          return res;
+        Data data = new Data();
+        data.setHourPrice(newCost);
+        ClientResponse response = service.path("rest/DataCenter/add/newenergycost")
+                .accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, data);
+        Response res = gson.fromJson(response.getEntity(String.class), Response.class);
+        return res;
     }
-     public Data getDCCurrentEnergy(int DCid){
-         Gson gson = new Gson();
-         String dcsJson = service.path("rest/DataCenter/get/currentenergy/"+ DCid)
-                    .accept(MediaType.APPLICATION_JSON).get(String.class);
-          Data res = gson.fromJson(dcsJson, Data.class);
-          return res;
+
+    public Data getDCCurrentTemp(int DCid) {
+        Data res = getFromServerJson("get/currenttemp/" + DCid, Data.class);
+        return res;
     }
-     public Data getDCCurrentEnergyCost(int DCid){
-          Gson gson = new Gson();
-         String dcsJson = service.path("rest/DataCenter/get/currentenergycost/"+ DCid)
-                    .accept(MediaType.APPLICATION_JSON).get(String.class);
-          Data res = gson.fromJson(dcsJson, Data.class);
-          return res;
-     }
-     public Data getDCCurrentFullReport(int DCid){
-          Gson gson = new Gson();
-         String dcsJson = service.path("rest/DataCenter/get/currentfullreport/"+ DCid)
-                    .accept(MediaType.APPLICATION_JSON).get(String.class);
-          Data res = gson.fromJson(dcsJson, Data.class);
-          return res;
-     }
-     public TempReport getDCFullTempReport(int DCid){
-          Gson gson = new Gson();
-         String dcsJson = service.path("rest/DataCenter/get/fulltempreport/"+ DCid)
-                    .accept(MediaType.APPLICATION_JSON).get(String.class);
-          TempReport res = gson.fromJson(dcsJson, TempReport.class);
-          return res;
-     }
-     public DataCenters getAllDcs(){
+
+    public Data getDCCurrentEnergy(int DCid) {
+        Data res = getFromServerJson("get/currentenergy/" + DCid, Data.class);
+        return res;
+    }
+
+    public Data getDCCurrentEnergyCost(int DCid) {
+        Data res = getFromServerJson("get/currentenergycost/" + DCid, Data.class);
+        return res;
+    }
+
+    public Data getDCCurrentFullReport(int DCid) {
+        Data res = getFromServerJson("get/currentfullreport/" + DCid, Data.class);
+        return res;
+    }
+
+    public TempReport getDCFullTempReport(int DCid) {
+        TempReport res = getFromServerJson("get/fulltempreport/" + DCid, TempReport.class);
+        return res;
+    }
+
+    public EnergyReport getFullEnergyReport(int DCid) {
+        EnergyReport res = getFromServerJson("get/fullenergyreport/" + DCid, EnergyReport.class);
+        return res;
+    }
+
+    public Data getDCMaxEnergyCost() {
+        Data res = getFromServerJson("get/maxenergycost", Data.class);
+        return res;
+    }
+
+    public EnergyReport getAllDcsEnergyCosts() {
+        EnergyReport res = getFromServerJson("get/allenergycost", EnergyReport.class);
+        return res;
+    }
+
+    public DataCenters getAllDcs() {
+        DataCenters res = getFromServerJson("get/datacentersinfoobj", DataCenters.class);
+        return res;
+    }
+
+    private <T> T getFromServerJson(String toServer, Class<T> toClass) {
         Gson gson = new Gson();
-         String dcsJson = service.path("rest/DataCenter/get/datacentersinfoobj")
-                    .accept(MediaType.APPLICATION_JSON).get(String.class);
-          DataCenters res = gson.fromJson(dcsJson, DataCenters.class);
-          return res;
+        String dcsJson = service.path("rest/DataCenter/" + toServer)
+                .accept(MediaType.APPLICATION_JSON).get(String.class);
+        T res = gson.fromJson(dcsJson, toClass);
+        return res;
     }
-     
+
 }
