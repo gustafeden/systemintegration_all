@@ -4,23 +4,28 @@
  * and open the template in the editor.
  */
 package Models;
+
 import java.util.List;
-import javax.xml.bind.annotation.XmlRootElement; 
-@XmlRootElement(name = "TempReport") 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "TempReport")
 /**
  *
  * @author gusta
  */
 public class TempReport {
 
-   
-   private List<Data> values;
+    private static final long serialVersionUID = 1L;
+
+    private List<Data> values;
     private Float maxTemp;
     private Float minTemp;
     private Float avgTemp;
-    
-    public TempReport(){}
-     public List<Data> getValues() {
+
+    public TempReport() {
+    }
+
+    public List<Data> getValues() {
         return values;
     }
 
