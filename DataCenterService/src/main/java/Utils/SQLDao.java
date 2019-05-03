@@ -10,7 +10,6 @@ import Models.DataCenter;
 import Models.DataCenters;
 import Models.EnergyReport;
 import Models.TempReport;
-import com.oracle.jrockit.jfr.DataType;
 import com.sun.rowset.CachedRowSetImpl;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,7 +18,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Date;
@@ -373,7 +371,7 @@ public class SQLDao {
                 + "on energycosts.id = data.energycostid\n"
                 + "where datacenters.id = '" + id + "' \n"
                 + "having created >= ( CURDATE() - INTERVAL 1 DAY )\n"
-                + "LIMIT 24;";
+                + "order by created DESC LIMIT 24;";
         try {
             ResultSet rs1 = executeSQLQuery(query1);
             if (rs1.next()) {
