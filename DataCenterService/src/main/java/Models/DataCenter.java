@@ -7,30 +7,36 @@ package Models;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.xml.bind.annotation.XmlElement; 
-import javax.xml.bind.annotation.XmlRootElement; 
-@XmlRootElement(name = "DataCenter") 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "DataCenter")
 /**
  *
  * @author gusta
  */
-public class DataCenter implements Serializable{
+public class DataCenter implements Serializable {
 
     private static final long serialVersionUID = 1L;
     int id;
     String name;
     Date created;
-    public DataCenter(){}
-    public DataCenter(int id, String name, Date created){
+
+    public DataCenter() {
+    }
+
+    public DataCenter(int id, String name, Date created) {
         this.id = id;
         this.name = name;
         this.created = created;
-        
+
     }
+
     public int getId() {
         return id;
     }
-    @XmlElement 
+
+    @XmlElement
     public void setId(int id) {
         this.id = id;
     }
@@ -38,7 +44,8 @@ public class DataCenter implements Serializable{
     public String getName() {
         return name;
     }
-    @XmlElement 
+
+    @XmlElement
     public void setName(String name) {
         this.name = name;
     }
@@ -46,7 +53,8 @@ public class DataCenter implements Serializable{
     public Date getCreated() {
         return created;
     }
-    @XmlElement 
+
+    @XmlElement
     public void setCreated(Date created) {
         this.created = created;
     }

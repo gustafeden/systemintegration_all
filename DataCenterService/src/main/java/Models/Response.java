@@ -6,25 +6,29 @@
 package Models;
 
 import java.io.Serializable;
-import javax.xml.bind.annotation.XmlRootElement; 
-@XmlRootElement(name = "Response") 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "Response")
 /**
  *
  * @author gusta
  */
-public class Response implements Serializable{
+public class Response implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
-  
     private String message;
     private boolean status;
-    public Response(){
-    
+
+    public Response() {
+
     }
-    public Response(String msg, boolean bol){
+
+    public Response(String msg, boolean bol) {
         this.message = msg;
         this.status = bol;
     }
+
     public String getMessage() {
         return message;
     }
