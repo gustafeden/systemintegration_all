@@ -23,8 +23,10 @@ public class mqtttest implements MqttCallback{
     private String clientId;
     private Message message;
     Set<ChatEndpoint> chatEndpoints;
+    SQLDao db;
     public mqtttest(String adress, String port, String username, String password, Set<ChatEndpoint> chatEndpoints) {
         String host;
+        db = new SQLDao();
         host = "tcp://" + adress + ":" + port;
         this.clientId = "";
         MqttConnectOptions conOpt = new MqttConnectOptions();
@@ -91,8 +93,14 @@ public class mqtttest implements MqttCallback{
     public void messageArrived(String topic, MqttMessage message) throws MqttException, IOException, EncodeException {
         System.out.println(String.format("[%s] %s", topic, new String(message.getPayload())));
         Message ret = new Message();
+        int temp = Integer.parseInt(new String(message.getPayload()));
         ret.setContent(new String(message.getPayload()));
         ret.setFrom(topic);
+        broadcast(ret);
+       // System.out.println("test before mysql query update");
+        String query = "INSERT INTO DHT11sensor (temperature, humidity, deviceid) VALUES ('"+temp+"', '40', '1');";
+        Integer result =  db.executeSQLUpdate(query);
+        ret.setContent(result.toString());
         broadcast(ret);
     }
     public void setMsgNull(){
