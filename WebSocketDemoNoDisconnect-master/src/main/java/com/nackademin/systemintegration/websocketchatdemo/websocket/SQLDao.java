@@ -38,6 +38,11 @@ public class SQLDao {
       public ResultSet executeSQLQuery(String query) {
         ResultSet rs = null;
         CachedRowSetImpl crs = null;
+         try{
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        }catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
         try (Connection con = DriverManager.getConnection(
                 "sysintinstance.c3ftwz9lwjxd.us-east-1.rds.amazonaws.com",
                "gustafeden",
@@ -54,6 +59,11 @@ public class SQLDao {
 
     public int executeSQLUpdate(String query) {
         int result = 0;
+         try{
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        }catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
         try (Connection con = DriverManager.getConnection(
                 "jdbc:mysql://sysintinstance.c3ftwz9lwjxd.us-east-1.rds.amazonaws.com:3306/sysint",
                "gustafeden",

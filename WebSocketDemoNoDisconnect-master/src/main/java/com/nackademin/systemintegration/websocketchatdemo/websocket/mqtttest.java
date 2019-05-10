@@ -93,15 +93,15 @@ public class mqtttest implements MqttCallback{
     public void messageArrived(String topic, MqttMessage message) throws MqttException, IOException, EncodeException {
         System.out.println(String.format("[%s] %s", topic, new String(message.getPayload())));
         Message ret = new Message();
-        int temp = Integer.parseInt(new String(message.getPayload()));
+        //int temp = Integer.parseInt(new String(message.getPayload()));
         ret.setContent(new String(message.getPayload()));
         ret.setFrom(topic);
         broadcast(ret);
        // System.out.println("test before mysql query update");
-        String query = "INSERT INTO DHT11sensor (temperature, humidity, deviceid) VALUES ('"+temp+"', '40', '1');";
-        Integer result =  db.executeSQLUpdate(query);
-        ret.setContent(result.toString());
-        broadcast(ret);
+       // String query = "INSERT INTO DHT11sensor (temperature, humidity, deviceid) VALUES ('"+temp+"', '40', '1');";
+       // Integer result =  db.executeSQLUpdate(query);
+      //  ret.setContent(result.toString());
+      //  broadcast(ret);
     }
     public void setMsgNull(){
         this.message = null;

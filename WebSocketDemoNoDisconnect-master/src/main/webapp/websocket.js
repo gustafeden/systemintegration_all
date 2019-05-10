@@ -2,7 +2,7 @@ var ws;
 //test
 function connect() {
    var username = document.getElementById("username").value;
-   ws = new WebSocket("ws://localhost:8080/WebSocketDemoNoDisconnect-master/chat/" + username);
+   ws = new WebSocket("ws://172.20.200.230:8080/WebSocketDemoNoDisconnect-master/chat/" + username);
    //ws = new WebSocket("ws://" + location.hostname + ":" + location.port + "WebSocketDemoNoDisconnect-master/chat/"+ username);
    //alert("connecting");
     ws.onmessage = function(event) {

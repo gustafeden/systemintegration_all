@@ -22,7 +22,7 @@ public class ChatEndpoint {
     public Session session;
     private static final Set<ChatEndpoint> chatEndpoints = new CopyOnWriteArraySet<>();
     private static HashMap<String, String> users = new HashMap<>();
-    private static mqtttest subscriber = new mqtttest("m24.cloudmqtt.com", "12530","ofqhaueq", "c6lwyXwW_8AQ", chatEndpoints);
+    private static mqtttest subscriber = new mqtttest("postman.cloudmqtt.com", "18986","wbxcsrlx", "1gbNtqwbGAbj", chatEndpoints);
 
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) 
