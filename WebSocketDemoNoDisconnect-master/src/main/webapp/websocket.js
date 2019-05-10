@@ -8,7 +8,8 @@ function connect() {
     ws.onmessage = function(event) {
         var log = document.getElementById("log");
         var message = JSON.parse(event.data);
-        log.innerHTML += message.from + " : " + message.content + "\n";
+        log.innerHTML += message.from + " : " + message.content + "\n" + message.temperature + "\n";
+        console.log(message);
     };
     
 

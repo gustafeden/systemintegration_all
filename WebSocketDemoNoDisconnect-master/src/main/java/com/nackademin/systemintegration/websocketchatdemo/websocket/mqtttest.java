@@ -9,6 +9,7 @@ package com.nackademin.systemintegration.websocketchatdemo.websocket;
  *
  * @author gusta
  */
+import com.google.gson.Gson;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import com.nackademin.systemintegration.websocketchatdemo.model.Message;
@@ -52,7 +53,7 @@ public class mqtttest implements MqttCallback{
     public void removeEndpoint(ChatEndpoint enp){
         chatEndpoints.remove(enp);
     }
-    private void broadcast(Message message) 
+    public void broadcast(Message message) 
             throws IOException, EncodeException 
     {
         chatEndpoints.forEach(endpoint -> {
@@ -92,16 +93,31 @@ public class mqtttest implements MqttCallback{
     @Override
     public void messageArrived(String topic, MqttMessage message) throws MqttException, IOException, EncodeException {
         System.out.println(String.format("[%s] %s", topic, new String(message.getPayload())));
-        Message ret = new Message();
-        //int temp = Integer.parseInt(new String(message.getPayload()));
-        ret.setContent(new String(message.getPayload()));
-        ret.setFrom(topic);
-        broadcast(ret);
-       // System.out.println("test before mysql query update");
-       // String query = "INSERT INTO DHT11sensor (temperature, humidity, deviceid) VALUES ('"+temp+"', '40', '1');";
-       // Integer result =  db.executeSQLUpdate(query);
-      //  ret.setContent(result.toString());
-      //  broadcast(ret);
+        
+        String jsonstring = new String(message.getPayload());
+       // ret.setContent(new String(message.getPayload()));
+       // ret.setFrom(topic);
+        //broadcast(ret);
+        Gson gson = new Gson();
+        Message tempdata = gson.fromJson(jsonstring, Message.class);
+        broadcast(tempdata);
+        //Message result = new Message();
+       // System.out.println("test before mysql query update xxxxxxxx");
+//       Set<Thread> threads = Thread.getAllStackTraces().keySet();
+// 
+//        for (Thread t : threads) {
+//            String name = t.getName();
+//            Thread.State state = t.getState();
+//            int priority = t.getPriority();
+//            String type = t.isDaemon() ? "Daemon" : "Normal";
+//            System.out.printf("%-20s \t %s \t %d \t %s\n", name, state, priority, type);
+//        }
+        String query = "INSERT INTO DHT11sensor (temperature, humidity, deviceid) VALUES ('"+tempdata.getTemperature()+"', '"+tempdata.getHumidity()+"', '"+tempdata.getDeviceid()+"');";
+        Float res = (float) db.executeSQLUpdate(query);
+        System.out.println("sql result: " + res);
+        //result.setTemperature(res);
+       // ret.setContent(result.toString());
+        //broadcast(result);
     }
     public void setMsgNull(){
         this.message = null;

@@ -28,11 +28,11 @@ public class SQLDao {
     
     
     public SQLDao(){
-        try{
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        }catch(ClassNotFoundException e){
-            e.printStackTrace();
-        }
+//        try{
+//        Class.forName("com.mysql.cj.jdbc.Driver");
+//        }catch(ClassNotFoundException e){
+//            e.printStackTrace();
+//        }
         
     }
       public ResultSet executeSQLQuery(String query) {
@@ -64,8 +64,9 @@ public class SQLDao {
         }catch(ClassNotFoundException e){
             e.printStackTrace();
         }
+System.out.println("executing sql update");
         try (Connection con = DriverManager.getConnection(
-                "jdbc:mysql://sysintinstance.c3ftwz9lwjxd.us-east-1.rds.amazonaws.com:3306/sysint",
+                "jdbc:mysql://sysintinstance.c3ftwz9lwjxd.us-east-1.rds.amazonaws.com:3306/sysint?serverTimezone=UTC&useSSL=false",
                "gustafeden",
                 "SecurePassword!");
                 PreparedStatement stmt = con.prepareStatement(query);) {

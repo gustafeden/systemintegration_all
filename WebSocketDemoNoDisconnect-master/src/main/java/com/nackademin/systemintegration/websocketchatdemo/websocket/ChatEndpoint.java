@@ -56,6 +56,8 @@ public class ChatEndpoint {
         message.setFrom(users.get(session.getId()));
         message.setContent("Disconnected!");
         broadcast(message);
+        //subscriber.broadcast(message);
+        
     }
 
     @OnError
